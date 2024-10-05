@@ -24,8 +24,8 @@ public class Main {
                 s = reader.readLine(); 
             }
             System.out.println("Rel1: ");
-            Relation rel = new Relation(csv1);
-            System.out.println(rel.toString());
+            Relation relPersone = new Relation(csv1);
+            System.out.println(relPersone.toString());
             System.out.println();
 
             String s2 = reader2.readLine();
@@ -34,14 +34,14 @@ public class Main {
                 csv2 += s2;
                 s2 = reader2.readLine(); 
             }
-            System.out.println("Rel2: ");
-            Relation rel2 = new Relation(csv2);
-            System.out.println(rel2.toString());
+            System.out.println("relOrdini: ");
+            Relation relOrdini = new Relation(csv2);
+            System.out.println(relOrdini.toString());
             System.out.println();
 
             //Selection
             System.out.println("Selection: ");
-            System.out.println(Selection.apply(rel, "nome", "Mario"));
+            System.out.println(Selection.apply(relPersone, "nome", "Mario"));
             System.out.println();
 
             //Projection
@@ -49,17 +49,17 @@ public class Main {
             ArrayList<String> params = new ArrayList<>();
             params.add("nome");
             params.add("id");
-            System.out.println(Projection.apply(rel, params));
+            System.out.println(Projection.apply(relPersone, params));
             System.out.println();
 
             //Union
             System.out.println("Union: ");
-            System.out.println(Union.apply(rel, rel2));
+            System.out.println(Union.apply(relPersone, relOrdini));
             System.out.println();
 
             //Difference
             System.out.println("Difference: ");
-            System.out.println(Difference.apply(rel, rel2));
+            System.out.println(Difference.apply(relPersone, relOrdini));
             System.out.println();
 
             reader.close();
@@ -82,8 +82,8 @@ public class Main {
                 s = reader.readLine(); 
             }
             System.out.println("Rel1: ");
-            Relation rel = new Relation(csv1);
-            System.out.println(rel.toString());
+            Relation relPersone = new Relation(csv1);
+            System.out.println(relPersone.toString());
             System.out.println();
 
             String s2 = reader2.readLine();
@@ -92,9 +92,9 @@ public class Main {
                 csv2 += s2;
                 s2 = reader2.readLine(); 
             }
-            System.out.println("Rel2: ");
-            Relation rel2 = new Relation(csv2);
-            System.out.println(rel2.toString());
+            System.out.println("relOrdini: ");
+            Relation relOrdini = new Relation(csv2);
+            System.out.println(relOrdini.toString());
             System.out.println();
 
             String s3 = reader3.readLine();
@@ -103,20 +103,76 @@ public class Main {
                 csv3 += s3;
                 s3 = reader3.readLine(); 
             }
-            System.out.println("Rel3: ");
-            Relation rel3 = new Relation(csv3);
-            System.out.println(rel3.toString());
+            System.out.println("relProdotti: ");
+            Relation relProdotti = new Relation(csv3);
+            System.out.println(relProdotti.toString());
             System.out.println();
 
             System.out.println("Product: ");
-            System.out.println(CartesianProduct.apply(rel, rel2));
+            System.out.println(CartesianProduct.apply(relPersone, relOrdini));
             System.out.println();
 
             System.out.println("Junction: ");
-            ArrayList<String> params = new ArrayList<>();
-            params.add("id_utente");
-            System.out.println(Junction.apply(rel, rel2, params));
+            ArrayList<String> id_utente = new ArrayList<>();
+            id_utente.add("id_utente");
+
+            ArrayList<String> id_prodotto = new ArrayList<>();
+            id_prodotto.add("id_prodotto");
+
+            System.out.println(Junction.apply(relPersone, Junction.apply(relOrdini, relProdotti, id_prodotto), id_utente));
             
+
+            System.out.println("\n\nQUERY1: ");
+            ArrayList<String> keysQueryOne = new ArrayList<>();
+            keysQueryOne.add("qty");
+            keysQueryOne.add("prezzo_unitario");
+            Relation queryOne = Projection.apply(Junction.apply(relOrdini, relProdotti, id_prodotto), keysQueryOne);
+            System.out.println(queryOne);
+            float sum = 0f;
+            for (Row row : queryOne.getRows()) {
+                float element = 1f;
+                for (String value : row.getValues()) {
+                    element *= Float.parseFloat(value);
+                }
+                sum += element;
+            }
+            System.out.println(sum);
+
+            System.out.println("\n\nQUERY2");
+            ArrayList<String> keysQueryTwo = new ArrayList<>();
+            keysQueryTwo.add("qty");
+            keysQueryTwo.add("prezzo_unitario");
+            Relation queryTwo = Projection.apply(Junction.apply(relOrdini, relProdotti, id_prodotto), keysQueryTwo);
+            System.out.println(queryTwo);
+            for (Row row : queryTwo.getRows()) {
+                float element = 1f;
+                for (String value : row.getValues()) {
+                    element *= Float.parseFloat(value);
+                }
+                System.out.println(element);
+            }
+
+            System.out.println("\n\nQUERY3");
+            ArrayList<String> keysQuery3 = new ArrayList<>();
+            keysQuery3.add("nome");
+            keysQuery3.add("prezzo_unitario");
+            Relation query3 = Projection.apply(Junction.apply(relPersone, Junction.apply(relOrdini, relProdotti, id_prodotto), id_utente), keysQuery3);
+            System.out.println(query3);
+            ArrayList<String> nameUserMaxPrex = new ArrayList<>();
+            float maxPrex = 0f;
+            for (Row row : query3.getRows()) {
+                if(Float.parseFloat(row.getValues().get(1)) > maxPrex){
+                    nameUserMaxPrex.clear();
+                    maxPrex = Float.parseFloat(row.getValues().get(1));
+                    nameUserMaxPrex.add(row.getValues().get(0));
+                    continue;
+                }
+                if(Float.parseFloat(row.getValues().get(1)) == maxPrex){
+                    nameUserMaxPrex.add(row.getValues().get(0));
+                }
+            }
+            System.out.println(nameUserMaxPrex);
+
             reader.close();
             reader2.close();
             reader3.close();
