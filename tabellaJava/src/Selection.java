@@ -9,16 +9,22 @@ public class Selection {
      * @param value
      * @return Arraylist of all the matching rows
      */
-    public static ArrayList<Row> apply(Relation input, String key, String value){
+    public static Relation apply(Relation input, String key, String value){
         int keyPos;
+        String csv = "";
+        for (String keyString : input.getHeader()) {
+            csv += keyString + ",";
+        }
+        csv = csv.substring(0, csv.length()-1);
+        csv += "\n";
+
         keyPos = input.getHeader().indexOf(key);
-        ArrayList<Row> result = new ArrayList<>();
 
         for (Row row : input.getRows()) {
             if(row.get(keyPos).equals(value)){
-                result.add(row);
+                csv += row.getValues().toString().replaceAll("]", "").replaceAll("\\[", "").replaceAll(" ", "") + ",";
             }
         }
-        return result;
+        return new Relation(csv);
     }
 }

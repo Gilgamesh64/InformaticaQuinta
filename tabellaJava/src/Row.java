@@ -18,7 +18,7 @@ public class Row {
 
     @Override
     public String toString() {
-        return values.toString();
+        return values.toString() + "\n";
     }
 
     public String get(int n){

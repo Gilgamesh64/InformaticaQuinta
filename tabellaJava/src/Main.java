@@ -1,13 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
         //System.out.println("Es1: \n");
         //applyEs1();
-        System.out.println("Es2: \n");
-        applyEs2();
+        //System.out.println("Es2: \n");
+        //applyEs2();
+        System.out.println("Es3: \n");
+        applyEs3();
     }
 
     private static void applyEs1(){
@@ -172,6 +175,63 @@ public class Main {
                 }
             }
             System.out.println(nameUserMaxPrex);
+
+            reader.close();
+            reader2.close();
+            reader3.close();
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    private static void applyEs3(){
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("V3Data/city.csv"));
+            BufferedReader reader2 = new BufferedReader(new FileReader("V3Data/country.csv"));
+            BufferedReader reader3 = new BufferedReader(new FileReader("V3Data/countrylanguage.csv"));
+            String csv1 = "", csv2 = "", csv3 = "";
+
+            String s = reader.readLine();
+            while (s != null) {
+                s += "\n";
+                csv1 += s;
+                s = reader.readLine(); 
+            }
+            csv1.replaceAll("\"", "").trim();
+            System.out.println("relCity: ");
+            Relation relCity = new Relation(csv1);
+            System.out.println(relCity.toString());
+            System.out.println();
+
+            String s2 = reader2.readLine();
+            while (s2 != null) {
+                s2 += "\n";
+                csv2 += s2;
+                s2 = reader2.readLine(); 
+            }
+            csv2.replaceAll("\"", "").trim();
+            System.out.println("relCountry: ");
+            Relation relCountry = new Relation(csv2);
+            System.out.println(relCountry.toString());
+            System.out.println();
+
+            String s3 = reader3.readLine();
+            while (s3 != null) {
+                s3 += "\n";
+                csv3 += s3;
+                s3 = reader3.readLine(); 
+            }
+            csv3.replaceAll("\"", "").trim();
+            System.out.println("relCountryLanguage: ");
+            Relation relCountryLanguage = new Relation(csv3);
+            System.out.println(relCountryLanguage.toString());
+            System.out.println();
+
+            System.out.println("\n\n\n");
+
+            System.out.println("NAZIONI EUROPEE\n");
+            System.out.println(Selection.apply(relCountry, "\"Continent\"", "\"Europe\""));
+            System.out.println(Projection.apply(relCountry, new ArrayList<>(Arrays.asList(new String[] {"\"Name\""}))));
+            //Projection.apply(Selection.apply(relCountry, "\"Continent\"", "\"Europe\""), new ArrayList<>(Arrays.asList(new String[] {"\"Name\""})));
+            System.out.println(Selection.apply(Projection.apply(relCountry, new ArrayList<>(Arrays.asList(new String[] {"\"Continent\""}))), "\"Continent\"", "\"Europe\""));
 
             reader.close();
             reader2.close();
