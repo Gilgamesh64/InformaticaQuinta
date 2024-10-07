@@ -18,7 +18,12 @@ public class Row {
 
     @Override
     public String toString() {
-        return values.toString() + "\n";
+        String result = "";
+        for (String string : values) {
+            result += string + ",";
+        }
+        result = result.substring(0, result.length()-1); 
+        return result;
     }
 
     public String get(int n){

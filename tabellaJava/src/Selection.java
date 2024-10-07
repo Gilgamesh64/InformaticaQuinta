@@ -22,9 +22,10 @@ public class Selection {
 
         for (Row row : input.getRows()) {
             if(row.get(keyPos).equals(value)){
-                csv += row.getValues().toString().replaceAll("]", "").replaceAll("\\[", "").replaceAll(" ", "") + ",";
+                csv += row.getValues().toString().replaceAll("]", "").replaceAll("\\[", "").replaceAll(" ", "") + "\n";
             }
         }
+        csv = csv.substring(0, csv.length()-1);
         return new Relation(csv);
     }
 }

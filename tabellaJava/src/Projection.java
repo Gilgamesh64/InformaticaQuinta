@@ -18,8 +18,9 @@ public class Projection {
         for (String keyString : keys) {
             csv += keyString + ",";
         }
+        csv = csv.substring(0, csv.length()-1);
         csv += "\n";
-
+        
         for (Row row : input.getRows()) {
             for (int i = 0; i < keyPos.length; i++) {
                 csv += row.get(keyPos[i]) + ",";

@@ -37,6 +37,16 @@ public class Relation {
 
     @Override
     public String toString() {
-        return header + "\n" + rows.toString();
+        String result = "";
+        for (String string : header) {
+            result += string + ",";
+        }
+        result = result.substring(0, result.length()-1);
+        result += "\n";
+
+        for (Row row : rows) {
+            result += row.toString() + "\n";
+        }
+        return result;
     }
 }

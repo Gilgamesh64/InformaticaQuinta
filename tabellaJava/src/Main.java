@@ -37,9 +37,9 @@ public class Main {
                 csv2 += s2;
                 s2 = reader2.readLine(); 
             }
-            System.out.println("relOrdini: ");
-            Relation relOrdini = new Relation(csv2);
-            System.out.println(relOrdini.toString());
+            System.out.println("relPersone2: ");
+            Relation relPersone2 = new Relation(csv2);
+            System.out.println(relPersone2.toString());
             System.out.println();
 
             //Selection
@@ -57,12 +57,12 @@ public class Main {
 
             //Union
             System.out.println("Union: ");
-            System.out.println(Union.apply(relPersone, relOrdini));
+            System.out.println(Union.apply(relPersone, relPersone2));
             System.out.println();
 
             //Difference
             System.out.println("Difference: ");
-            System.out.println(Difference.apply(relPersone, relOrdini));
+            System.out.println(Difference.apply(relPersone, relPersone2));
             System.out.println();
 
             reader.close();
@@ -228,10 +228,8 @@ public class Main {
             System.out.println("\n\n\n");
 
             System.out.println("NAZIONI EUROPEE\n");
-            System.out.println(Selection.apply(relCountry, "\"Continent\"", "\"Europe\""));
-            System.out.println(Projection.apply(relCountry, new ArrayList<>(Arrays.asList(new String[] {"\"Name\""}))));
-            //Projection.apply(Selection.apply(relCountry, "\"Continent\"", "\"Europe\""), new ArrayList<>(Arrays.asList(new String[] {"\"Name\""})));
-            System.out.println(Selection.apply(Projection.apply(relCountry, new ArrayList<>(Arrays.asList(new String[] {"\"Continent\""}))), "\"Continent\"", "\"Europe\""));
+            
+            System.out.println(Projection.apply(Selection.apply(relCountry, "\"Continent\"", "\"Europe\""), new ArrayList<>(Arrays.asList(new String[] {"\"Name\""}))));
 
             reader.close();
             reader2.close();
