@@ -195,11 +195,7 @@ public class Main {
                 csv1 += s;
                 s = reader.readLine(); 
             }
-            csv1.replaceAll("\"", "").trim();
-            System.out.println("relCity: ");
             Relation relCity = new Relation(csv1);
-            System.out.println(relCity.toString());
-            System.out.println();
 
             String s2 = reader2.readLine();
             while (s2 != null) {
@@ -207,11 +203,7 @@ public class Main {
                 csv2 += s2;
                 s2 = reader2.readLine(); 
             }
-            csv2.replaceAll("\"", "").trim();
-            System.out.println("relCountry: ");
             Relation relCountry = new Relation(csv2);
-            System.out.println(relCountry.toString());
-            System.out.println();
 
             String s3 = reader3.readLine();
             while (s3 != null) {
@@ -219,13 +211,7 @@ public class Main {
                 csv3 += s3;
                 s3 = reader3.readLine(); 
             }
-            csv3.replaceAll("\"", "").trim();
-            System.out.println("relCountryLanguage: ");
             Relation relCountryLanguage = new Relation(csv3);
-            System.out.println(relCountryLanguage.toString());
-            System.out.println();
-
-            System.out.println("\n\n\n");
 
             System.out.println("NAZIONI EUROPEE\n");
             
