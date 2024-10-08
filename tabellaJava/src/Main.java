@@ -121,8 +121,11 @@ public class Main {
 
             ArrayList<String> id_prodotto = new ArrayList<>();
             id_prodotto.add("id_prodotto");
+            ArrayList<String> id_prodotto2 = new ArrayList<>();
+            id_prodotto2.add("id_prodotto2");
 
-            System.out.println(Junction.apply(relPersone, Junction.apply(relOrdini, relProdotti, id_prodotto), id_utente));
+            System.out.println(Junction.apply(relOrdini, relProdotti, id_prodotto, id_prodotto2));
+            //System.out.println(Junction.apply(relPersone, Junction.apply(relOrdini, relProdotti, id_prodotto), id_utente));
             
 
             System.out.println("\n\nQUERY1: ");
@@ -214,8 +217,29 @@ public class Main {
             Relation relCountryLanguage = new Relation(csv3);
 
             System.out.println("NAZIONI EUROPEE\n");
-            
             System.out.println(Projection.apply(Selection.apply(relCountry, "\"Continent\"", "\"Europe\""), new ArrayList<>(Arrays.asList(new String[] {"\"Name\""}))));
+
+            System.out.println("CITTA DELLA FRANCIA\n");
+            System.out.println(Selection.apply(relCity, "\"CountryCode\"", "\"FRA\""));
+
+            System.out.println("NOME DELLE NAZIONI CON POPOLAZIONE 100 < P < 200 ABITANTI");
+            System.out.println(Projection.apply(Selection.apply(relCountry, "\"Population\"", 100000000, 200000000), new ArrayList<>(Arrays.asList(new String[] {"\"Name\""}))));
+            
+            System.out.println("NOME, POPOLAZIONE, CAPITALE DI TUTTE LE NAZIONI DEL SUD AMERICA");
+            Relation south_americans = Selection.apply(relCountry, "\"Continent\"", "\"South America\"");
+            south_americans.rename("\"Name\"", "\"SouthAmericanCountryName\"");
+            south_americans.rename("\"Population\"", "\"SouthAmericanCountryPopulation\"");
+            Relation j = Junction.apply(south_americans, relCity, new ArrayList<>(Arrays.asList(new String[] {"\"Capital\""})), new ArrayList<>(Arrays.asList(new String[] {"\"ID\""})));
+            System.out.println(Projection.apply(j, new ArrayList<>(Arrays.asList(new String[] {"\"SouthAmericanCountryName\"", "\"SouthAmericanCountryPopulation\"", "\"Name\""}))));
+            
+            System.out.println("NAZIONI ASIATICHE CON ABITANTI > GIAPPONE");
+            Relation asia = Selection.apply(relCountry, "\"Continent\"", "\"Asia\"");
+            float japanPopulation = Float.parseFloat(Projection.apply(Selection.apply(relCountry, "\"Name\"", "\"Japan\""), new ArrayList<>(Arrays.asList(new String[] {"\"Population\""}))).getRows().getFirst().getValues().toString().replaceAll("[^0-9]", ""));
+            System.out.println(Selection.apply(asia, "\"Population\"", japanPopulation, Float.MAX_VALUE));
+
+            System.out.println("POPOLAZIONE CITTA CON MINORE E MAGGIORE NUMERO DI ABITANTI IN ITALIA");
+            //Relation italianCities = Selection.apply(asia, "\"CountryCode\"", "\"ITA\"");
+            //System.out.println(italianCities);
 
             reader.close();
             reader2.close();

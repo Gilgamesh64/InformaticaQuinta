@@ -49,4 +49,9 @@ public class Relation {
         }
         return result;
     }
+    public void rename(String oldString, String newString){
+        for (int i = 0; i < header.size(); i++) {
+            if(header.get(i).equals(oldString)) header.set(i, newString);
+        }
+    }
 }
