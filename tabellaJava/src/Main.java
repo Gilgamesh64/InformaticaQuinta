@@ -238,8 +238,26 @@ public class Main {
             System.out.println(Selection.apply(asia, "\"Population\"", japanPopulation, Float.MAX_VALUE));
 
             System.out.println("POPOLAZIONE CITTA CON MINORE E MAGGIORE NUMERO DI ABITANTI IN ITALIA");
-            //Relation italianCities = Selection.apply(asia, "\"CountryCode\"", "\"ITA\"");
-            //System.out.println(italianCities);
+            Relation italianCities = Selection.apply(relCity, "\"CountryCode\"", "\"ITA\"");
+            italianCities = Projection.apply(italianCities, new ArrayList<>(Arrays.asList(new String[] {"\"Name\"", "\"Population\""})));
+            int max = 0, min = Integer.MAX_VALUE;
+            String nameMax = "", nameMin = "";
+            for (Row row : italianCities.getRows()) {
+                int population = Integer.parseInt(row.getValues().get(1).replaceAll("[^0-9]", ""));
+                if(population > max){
+                    max = population;
+                    nameMax = row.getValues().get(0);
+                }
+                if(population < min){
+                    min = population;
+                    nameMin = row.getValues().get(0);
+                }
+            }
+            System.out.println("Max: " + nameMax + "\nMin: " + nameMin + "\n");
+
+            System.out.println("NAZIONI IN CUI SI PARLA INGLESE E NON FRANCESE");
+            Relation r = Difference.apply(Selection.apply(relCountryLanguage, "\"Language\"", "\"English\""), Selection.apply(relCountryLanguage, "\"Language\"", "\"French\""));
+            System.out.println(r);
 
             reader.close();
             reader2.close();
