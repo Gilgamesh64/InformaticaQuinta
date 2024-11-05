@@ -1,0 +1,71 @@
+1 -> {
+    SELECT SUM(Population)/1000000 AS population
+    FROM country
+    WHERE Continent = 'Asia';
+}
+
+2 -> {
+    SELECT country.Name, city.Name 
+    FROM city JOIN country 
+    ON city.CountryCode = country.Code;
+}
+
+3 -> {
+    SELECT countrylanguage.Language
+    FROM country JOIN countrylanguage
+    ON country.Code = countrylanguage.CountryCode
+    WHERE country.Continent = 'Europe';
+}
+
+4 -> {
+    SELECT SUM(country.SurfaceArea)
+    FROM country
+    WHERE country.Continent = 'North America';
+}
+
+5 -> {
+    SELECT District 
+    FROM country JOIN city 
+    ON country.Code = city.CountryCode;
+}
+
+6 -> {
+    SELECT Language 
+    FROM city JOIN countrylanguage 
+    ON city.CountryCode = countrylanguage.CountryCode 
+    WHERE city.Name = 'New York';
+}
+
+7 -> {
+    SELECT SUM(city.Population) 
+    FROM city 
+    WHERE city.CountryCode = 'FRA';
+}
+
+8 -> {
+    SELECT District 
+    FROM city 
+    WHERE city.CountryCode = 'ITA';
+}
+
+9 -> {
+    SELECT District 
+    FROM city JOIN country 
+    ON country.Code = city.CountryCode 
+    WHERE country.Population > 4000000;
+}
+
+10 -> {
+    SELECT countrylanguage.Language
+    FROM city JOIN country
+    ON city.CountryCode = country.Code
+    JOIN countrylanguage 
+    ON countrylanguage.CountryCode = city.CountryCode
+    WHERE country.Continent = 'Europe' AND city.Population > 500000
+}
+
+11 -> {
+    SELECT country.Name, countrylanguage.Language, country.Population * countrylanguage.Percentage AS Speakers
+    FROM country JOIN countrylanguage ON country.Code = countrylanguage.CountryCode
+    WHERE country.Continent = 'Africa';
+}

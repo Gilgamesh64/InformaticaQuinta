@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -52,6 +54,7 @@ public class Main {
             7 -> RIGA CON ETA MEDIA
             8 -> RIGA CON ETA MINIMA
             9 -> RIGA CON ETA MASSIMA
+            10 -> CARICAMENTO IN MASSA
             99 -> ESCI
             """);
         switch (System.console().readLine("-> ")) {
@@ -92,6 +95,9 @@ public class Main {
 
             case "9" -> {
                 applySelectMax("SELECT MAX(Età) FROM dati");
+            }
+            case "10" -> {
+                bulkLoad();
             }
             case "99" -> {
                 System.out.println("Thank you!");
@@ -216,6 +222,18 @@ public class Main {
             return;
         }
     }
+    public static void bulkLoad(){
+        String line = "";
+        try (BufferedReader br = new BufferedReader(new FileReader("studenti.csv"))) {
+            line = br.readLine();
+            while((line = br.readLine()) != null){
+                String[] s = line.split(",");
+                applyInsert("INSERT INTO dati (Cognome, Nome, Età) VALUES (\"" + s[1] + "\", \"" + s[0] + "\", \"" + Integer.parseInt(s[2]) + "\")");
+                
+            }
 
+        } catch (Exception e){e.printStackTrace();}
+
+    }
     
 }
